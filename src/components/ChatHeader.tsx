@@ -3,14 +3,21 @@ import React from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Character, Language } from '../types';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { getLanguageById } from '../data/scenarios';
 
 interface ChatHeaderProps {
   character: Character;
   language?: Language | null;
+  languageId?: string;
 }
 
-const ChatHeader: React.FC<ChatHeaderProps> = ({ character, language }) => {
+const ChatHeader: React.FC<ChatHeaderProps> = ({ character, language, languageId }) => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+  
+  // If we have languageId but no language object, try to get it
+  const displayLanguage = language || (languageId ? getLanguageById(languageId) : null);
 
   return (
     <div className="flex items-center p-3 border-b bg-white">
@@ -27,12 +34,12 @@ const ChatHeader: React.FC<ChatHeaderProps> = ({ character, language }) => {
           {character.name.charAt(0)}
         </div>
         <div>
-          <div className="font-medium">{character.name}</div>
+          <div className="font-medium">{isMobile && character.name.length > 15 ? `${character.name.substring(0, 15)}...` : character.name}</div>
           <div className="text-sm text-gray-500 flex items-center">
-            {language && (
-              <span className="mr-1">{language.flag}</span>
+            {displayLanguage && (
+              <span className="mr-1">{displayLanguage.flag}</span>
             )}
-            {language ? language.name : 'Italiano'}
+            {displayLanguage ? (isMobile ? displayLanguage.name : displayLanguage.nativeName) : 'Italiano'}
           </div>
         </div>
       </div>

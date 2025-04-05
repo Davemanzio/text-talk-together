@@ -120,6 +120,36 @@ export const scenarios: Scenario[] = [
     ]
   },
   {
+    id: 'formal_email',
+    title: 'Email Formale',
+    description: 'Scrivi email formali per contesti professionali',
+    category: 'business',
+    characters: [
+      {
+        id: 'email_coach',
+        name: 'Coach Email',
+        description: 'Un esperto di comunicazione professionale',
+        scenario: 'Sei un coach di comunicazione aziendale specializzato in email formali. Aiuta il cliente a scrivere email professionali per diversi contesti lavorativi come richieste, proposte, follow-up dopo riunioni, e comunicazioni con superiori.',
+        avatarUrl: '/placeholder.svg'
+      }
+    ]
+  },
+  {
+    id: 'informal_email',
+    title: 'Email Informale',
+    description: 'Scrivi email informali per colleghi e amici',
+    category: 'business',
+    characters: [
+      {
+        id: 'casual_coach',
+        name: 'Coach Informale',
+        description: 'Un esperto di comunicazione informale',
+        scenario: 'Sei un coach di comunicazione specializzato in stili informali. Aiuta il cliente a scrivere email amichevoli per colleghi, partner commerciali con cui si ha familiarità, e altre situazioni che richiedono un tono più rilassato ma comunque professionale.',
+        avatarUrl: '/placeholder.svg'
+      }
+    ]
+  },
+  {
     id: 'interview',
     title: 'Colloquio di Lavoro',
     description: 'Affronta un colloquio per una posizione lavorativa',
