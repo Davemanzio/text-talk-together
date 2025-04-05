@@ -6,14 +6,15 @@ import { useNavigate } from 'react-router-dom';
 
 interface ScenarioCardProps {
   scenario: Scenario;
+  languageId: string;
 }
 
-const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario }) => {
+const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, languageId }) => {
   const navigate = useNavigate();
   const character = scenario.characters[0]; // Per ora prendiamo solo il primo personaggio
 
   const handleClick = () => {
-    navigate(`/chat/${scenario.id}/${character.id}`);
+    navigate(`/chat/${scenario.id}/${character.id}?lang=${languageId}`);
   };
 
   return (

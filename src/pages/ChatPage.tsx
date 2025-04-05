@@ -1,8 +1,9 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { Message, Conversation } from '../types';
-import { getScenarioById, getCharacterById } from '../data/scenarios';
+import { getScenarioById, getCharacterById, getLanguageById } from '../data/scenarios';
 import ChatHeader from '../components/ChatHeader';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
@@ -10,6 +11,8 @@ import { useToast } from '@/hooks/use-toast';
 
 const ChatPage = () => {
   const { scenarioId, characterId } = useParams<{ scenarioId: string; characterId: string }>();
+  const [searchParams] = useSearchParams();
+  const languageId = searchParams.get('lang') || 'it';
   const navigate = useNavigate();
   const { toast } = useToast();
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -17,6 +20,7 @@ const ChatPage = () => {
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [loading, setLoading] = useState(false);
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
+  const [language, setLanguage] = useState(getLanguageById(languageId));
 
   useEffect(() => {
     if (!scenarioId || !characterId) {
@@ -33,7 +37,7 @@ const ChatPage = () => {
     // Inizializza la conversazione con un messaggio di benvenuto
     const welcomeMessage: Message = {
       id: uuidv4(),
-      text: "Ciao! Come posso aiutarti oggi?",
+      text: `Ciao! Come posso aiutarti oggi? Stiamo parlando in ${language?.name || 'Italiano'}.`,
       sender: 'character',
       timestamp: new Date(),
       character: character.id,
@@ -54,7 +58,7 @@ const ChatPage = () => {
         audio.pause();
       }
     };
-  }, [scenarioId, characterId, navigate]);
+  }, [scenarioId, characterId, navigate, language]);
 
   useEffect(() => {
     scrollToBottom();
@@ -103,11 +107,11 @@ const ChatPage = () => {
     setTimeout(() => {
       // In una versione reale, qui chiameremmo un'API per generare la risposta
       const botResponses = [
-        "Certo, sarò felice di aiutarti con questo.",
-        "Perfetto! Posso fornirti maggiori dettagli se necessario.",
-        "Ho capito. C'è qualcos'altro che vorresti sapere?",
-        "Grazie per l'informazione. Posso fare qualcos'altro per te?",
-        "Ottima scelta! Hai altre domande?"
+        `Certo, sarò felice di aiutarti con questo in ${language?.name || 'Italiano'}.`,
+        `Perfetto! Posso fornirti maggiori dettagli se necessario.`,
+        `Ho capito. C'è qualcos'altro che vorresti sapere?`,
+        `Grazie per l'informazione. Posso fare qualcos'altro per te?`,
+        `Ottima scelta! Hai altre domande?`
       ];
       
       const responseText = botResponses[Math.floor(Math.random() * botResponses.length)];
@@ -140,7 +144,7 @@ const ChatPage = () => {
 
   return (
     <div className="flex flex-col h-screen">
-      <ChatHeader character={conversation.character} />
+      <ChatHeader character={conversation.character} language={language} />
       
       <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
         {conversation.messages.map((message) => (

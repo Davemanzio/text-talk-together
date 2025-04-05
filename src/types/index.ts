@@ -12,6 +12,7 @@ export interface Scenario {
   title: string;
   description: string;
   characters: Character[];
+  category: 'daily' | 'business' | 'technical'; // Categoria dello scenario
 }
 
 export interface Message {
@@ -27,4 +28,11 @@ export interface Conversation {
   id: string;
   messages: Message[];
   character: Character;
+}
+
+export interface Language {
+  id: string;
+  name: string;
+  nativeName: string;
+  flag: string;
 }
