@@ -1,5 +1,5 @@
 
-import { Scenario } from '../types';
+import { Scenario, Character } from '../types';
 
 export const scenarios: Scenario[] = [
   {
