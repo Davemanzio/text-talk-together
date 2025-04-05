@@ -1,13 +1,13 @@
-
 import React, { useState } from 'react';
 import { scenarios } from '../data/scenarios';
 import ScenarioCard from '../components/ScenarioCard';
 import LanguageSelector from '../components/LanguageSelector';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Book, Briefcase, Code, ArrowRight, MessageCircle, Headphones, Globe } from 'lucide-react';
+import { Book, Briefcase, Code, ArrowRight, MessageCircle, Headphones, Globe, User } from 'lucide-react';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 import { 
   Carousel,
   CarouselContent,
@@ -20,6 +20,7 @@ const Index = () => {
   const [selectedLanguage, setSelectedLanguage] = useState('it');
   const isMobile = useIsMobile();
   const navigate = useNavigate();
+  const { toast } = useToast();
 
   const dailyScenarios = scenarios.filter(scenario => scenario.category === 'daily');
   const businessScenarios = scenarios.filter(scenario => scenario.category === 'business');
@@ -35,8 +36,28 @@ const Index = () => {
     }
   };
 
+  const handleLoginClick = () => {
+    toast({
+      title: "Funzionalità di login",
+      description: "Il login richiede l'integrazione con Supabase. Presto disponibile.",
+    });
+  };
+
   return (
     <div className="container mx-auto p-4 max-w-5xl">
+      {/* Top navigation bar */}
+      <nav className="flex justify-between items-center mb-6">
+        <div className="text-2xl font-bold bg-gradient-to-r from-blue-700 to-indigo-600 bg-clip-text text-transparent">
+          TTT
+        </div>
+        <div>
+          <Button variant="outline" onClick={handleLoginClick} className="flex items-center gap-2">
+            <User size={16} />
+            <span>Accedi</span>
+          </Button>
+        </div>
+      </nav>
+      
       {/* Hero Section */}
       <section className="relative py-10 md:py-16 mb-8 md:mb-16 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-100 -z-10 opacity-70"></div>
@@ -52,15 +73,17 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
-            <LanguageSelector
-              selectedLanguage={selectedLanguage}
-              onLanguageChange={setSelectedLanguage}
-            />
+            <div className="w-full max-w-xs">
+              <LanguageSelector
+                selectedLanguage={selectedLanguage}
+                onLanguageChange={setSelectedLanguage}
+              />
+            </div>
             
             <Button 
               onClick={handleStartClick}
               size="lg" 
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-full shadow-md transition-all"
+              className="w-full md:w-auto bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2 rounded-full shadow-md transition-all"
             >
               Inizia ora <ArrowRight className="ml-2" />
             </Button>
@@ -104,11 +127,19 @@ const Index = () => {
                 <div className="p-1">
                   <div className="bg-white rounded-xl overflow-hidden shadow-md">
                     <div className="h-40 md:h-56 bg-gradient-to-r from-blue-100 to-indigo-100 relative">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-3xl md:text-4xl text-blue-600 font-semibold">
-                          {scenario.characters[0].name.charAt(0)}
+                      {scenario.imageUrl ? (
+                        <img 
+                          src={scenario.imageUrl} 
+                          alt={scenario.title} 
+                          className="w-full h-full object-cover opacity-90"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-white/90 shadow-sm flex items-center justify-center text-3xl md:text-4xl text-blue-600 font-semibold">
+                            {scenario.characters[0].name.charAt(0)}
+                          </div>
                         </div>
-                      </div>
+                      )}
                     </div>
                     <div className="p-4 md:p-6">
                       <h3 className="text-lg md:text-xl font-semibold mb-2">{scenario.title}</h3>
@@ -202,6 +233,7 @@ const Index = () => {
             <li className="text-base md:text-lg">Seleziona uno scenario di conversazione</li>
             <li className="text-base md:text-lg">Invia messaggi al personaggio virtuale</li>
             <li className="text-base md:text-lg">Ascolta le risposte audio generate automaticamente</li>
+            <li className="text-base md:text-lg">Ricevi correzioni grammaticali per migliorare</li>
             <li className="text-base md:text-lg">Esercitati in conversazioni realistiche</li>
           </ol>
         </div>

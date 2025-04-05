@@ -19,8 +19,21 @@ const ScenarioCard: React.FC<ScenarioCardProps> = ({ scenario, languageId }) => 
     navigate(`/chat/${scenario.id}/${character.id}?lang=${languageId}`);
   };
 
+  // Default image if none provided
+  const scenarioImage = scenario.imageUrl || 
+    "https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80";
+
   return (
-    <Card className="cursor-pointer hover:shadow-md transition-shadow" onClick={handleClick}>
+    <Card className="cursor-pointer hover:shadow-md transition-shadow overflow-hidden" onClick={handleClick}>
+      <div className="h-32 bg-gradient-to-r from-blue-50 to-indigo-100 relative">
+        <img 
+          src={scenarioImage} 
+          alt={scenario.title} 
+          className="w-full h-full object-cover opacity-70"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-white to-transparent"></div>
+      </div>
+      
       <CardHeader className="pb-2 px-4 py-3 md:px-6 md:py-4">
         <CardTitle className="text-base md:text-lg">{scenario.title}</CardTitle>
         <CardDescription className="text-xs md:text-sm">{scenario.description}</CardDescription>

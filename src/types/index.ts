@@ -13,6 +13,7 @@ export interface Scenario {
   description: string;
   characters: Character[];
   category: 'daily' | 'business' | 'technical'; // Categoria dello scenario
+  imageUrl?: string; // Added for scenario images
 }
 
 export interface Message {
@@ -22,12 +23,14 @@ export interface Message {
   timestamp: Date;
   character?: string;
   audioUrl?: string;
+  correction?: string; // Added for error correction
 }
 
 export interface Conversation {
   id: string;
   messages: Message[];
   character: Character;
+  scenario: Scenario; // Added scenario reference
 }
 
 export interface Language {
