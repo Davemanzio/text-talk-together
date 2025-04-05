@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
@@ -7,7 +6,7 @@ import { getScenarioById, getCharacterById } from '../data/scenarios';
 import ChatHeader from '../components/ChatHeader';
 import MessageBubble from '../components/MessageBubble';
 import MessageInput from '../components/MessageInput';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 
 const ChatPage = () => {
   const { scenarioId, characterId } = useParams<{ scenarioId: string; characterId: string }>();
